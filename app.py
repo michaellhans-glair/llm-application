@@ -1,19 +1,58 @@
 # app.py
 from flask import Flask, request, render_template
 from pytube import YouTube
-from openai import OpenAI
 from transcript_extractor import fetch_transcript  # Importing our custom transcript extraction function
 from dotenv import load_dotenv
 import os
+import requests
+import markdown
 
 # Load environment variables from .env file
 load_dotenv()
-api_key = os.getenv('OPENAI_API_KEY')
+gemini_api_key = os.getenv('GEMINI_API_KEY')
 
 app = Flask(__name__)
 
-# Set your OpenAI API key here
-client = OpenAI(api_key=api_key)
+# Gemini API endpoint (replace with the actual endpoint)
+GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent"
+
+# Function to get completion using the Gemini API
+def get_gemini_completion(prompt):
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": prompt}
+                ]
+            }
+        ]
+    }
+
+    params = {
+        "key": gemini_api_key
+    }
+
+    response = requests.post(GEMINI_API_ENDPOINT, headers=headers, json=data, params=params)
+
+    if response.status_code == 200:
+        # Extract the generated text content from the response
+        try:
+            candidates = response.json().get("candidates", [])
+            if candidates:
+                # Extract the text from the first candidate's content
+                markdown_content = candidates[0].get("content", {}).get("parts", [])[0].get("text", "").strip()
+                # Convert Markdown to HTML using the markdown library
+                return markdown.markdown(markdown_content)
+            else:
+                return "No summary generated."
+        except (KeyError, IndexError, TypeError):
+            return "Unexpected response format from Gemini API."
+    else:
+        return f"Gemini API error: {response.status_code} - {response.text}"
 
 @app.route('/')
 def index():
@@ -26,8 +65,6 @@ def summarize():
     try:
         # Extract the video ID from the URL and fetch video details using pytube
         yt = YouTube(video_url)
-        video_title = "YouTube Title"
-        video_thumbnail = yt.thumbnail_url
 
         # Use the fetch_transcript function from transcript_extractor.py to get the transcript
         transcript_text = fetch_transcript(video_url)
@@ -51,15 +88,11 @@ def summarize():
         Your response should be well-structured and easy to read.
         """
 
-        # Call OpenAI API to summarize the transcript using the new format
-        response = client.completions.create(model="gpt-3.5-turbo",
-            prompt=prompt_template,
-            max_tokens=300,
-            temperature=0.7)
-        summary = response.choices[0].text.strip()
+        # Call the new get_gemini_completion function to summarize the transcript
+        summary = get_gemini_completion(prompt_template)
 
-        return render_template('index.html', video_url=video_url, summary=summary, transcript=transcript_text, 
-                               video_title=video_title, video_thumbnail=video_thumbnail)
+        return render_template('index.html', video_url=video_url, summary=summary, transcript=transcript_text)
+    
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
