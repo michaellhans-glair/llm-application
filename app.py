@@ -85,13 +85,8 @@ def summarize():
         Your response should be well-structured and easy to read.
         """
 
-        # Log the prompt template for debugging
-        print("Prompt Template: ", prompt_template)
-
         # Call the new get_gemini_completion function to summarize the transcript
         summary = get_gemini_completion(prompt_template)
-        print("Summary: ", summary)
-
         return render_template('index.html', video_url=video_url, summary=summary, transcript=transcript_text)
     
     except Exception as e:
