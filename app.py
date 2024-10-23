@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, request, render_template
 from pytube import YouTube
-from transcript_extractor import fetch_transcript  # Importing our custom transcript extraction function
+from youtube_service import fetch_transcript
 from dotenv import load_dotenv
 import os
 import requests
@@ -9,14 +9,10 @@ import markdown
 
 # Load environment variables from .env file
 load_dotenv()
-gemini_api_key = os.getenv('GEMINI_API_KEY')
-
 app = Flask(__name__)
-
-# Gemini API endpoint (replace with the actual endpoint)
+gemini_api_key = os.getenv('GEMINI_API_KEY')
 GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent"
 
-# Function to get completion using the Gemini API
 def get_gemini_completion(prompt):
     headers = {
         "Content-Type": "application/json"
