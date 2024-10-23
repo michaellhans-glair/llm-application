@@ -66,6 +66,7 @@ def summarize():
         transcript_text = fetch_transcript(video_url)
 
         if "error" in transcript_text.lower():
+            print("Transcript error detected.")
             return render_template('index.html', error=transcript_text)  # Display error if transcript fetching fails
 
         # Define the summarization prompt template
@@ -84,15 +85,19 @@ def summarize():
         Your response should be well-structured and easy to read.
         """
 
+        # Log the prompt template for debugging
+        print("Prompt Template: ", prompt_template)
+
         # Call the new get_gemini_completion function to summarize the transcript
         summary = get_gemini_completion(prompt_template)
-        print(video_url)
-        print(summary)
+        print("Summary: ", summary)
 
         return render_template('index.html', video_url=video_url, summary=summary, transcript=transcript_text)
     
     except Exception as e:
+        print("Exception occurred: ", str(e))  # Log the exception details
         return f"An error occurred: {str(e)}"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
