@@ -86,6 +86,8 @@ def summarize():
 
         # Call the new get_gemini_completion function to summarize the transcript
         summary = get_gemini_completion(prompt_template)
+        print(video_url)
+        print(summary)
 
         return render_template('index.html', video_url=video_url, summary=summary, transcript=transcript_text)
     
