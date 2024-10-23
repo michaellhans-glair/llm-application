@@ -1,0 +1,60 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Video Summarization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .summary, .transcript {
+            width: 48%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Video Summarization</h1>
+        <form method="post" action="/summarize">
+            <label for="video_url">YouTube Video URL:</label>
+            <input type="url" id="video_url" name="video_url" required>
+            <button type="submit">Summarize</button>
+        </form>
+
+        {% if video_url %}
+        <div class="row">
+            <div class="video">
+                <h2>{{ video_title }}</h2>
+                <iframe width="420" height="315"
+                        src="https://www.youtube.com/embed/{{ video_url.split('v=')[-1] }}">
+                </iframe>
+            </div>
+            <div class="summary">
+                <h2>Summary:</h2>
+                <p>{{ summary }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="transcript">
+                <h2>Transcript:</h2>
+                <p>{{ transcript }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

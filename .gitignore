@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+*.env
+
+# PyCharm and VSCode
+.idea/
+.vscode/
+
+# Jupyter Notebook checkpoints (if you use Jupyter)
+.ipynb_checkpoints/
+
+# macOS files
+.DS_Store
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Flask settings and database
+instance/
+config.py
+
+# Environment variables
+.env
+*.env
+
+# Python-specific caches and package dependencies
+*.egg-info/
+.eggs/
+*.egg
+*.whl
+pip-log.txt
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Deployment files
+*.tar
+*.zip
+
+# Ignore secrets and API keys
+keys/
+apikey.json
+
+# Ignore any system or editor-specific files
+*.swp
