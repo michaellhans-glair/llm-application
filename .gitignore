@@ -51,3 +51,4 @@ apikey.json
 
 # Ignore any system or editor-specific files
 *.swp
+.vercel
