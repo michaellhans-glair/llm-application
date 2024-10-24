@@ -2,8 +2,8 @@
 
 This is a Flask-based web application that generates a brief summary and displays the transcript of a YouTube video. The app leverages **Google's Gemini Language Model API** to generate structured and concise summaries based on the YouTube video transcript.
 
-Important Note: Currently, the deployed website isn't functioning properly because of a library limitation. YouTube somehow blocked the static IP address of Vercel app that tries to hit the YouTube API inside the YouTube Transcription API Library.
-
+_Important Note: Currently, the deployed website isn't functioning properly because of a library limitation. YouTube somehow blocked the static IP address of Vercel app that tries to hit the YouTube API inside the YouTube Transcription API Library.
+_
 ![YouTube Summarization Demo](./assets/llm-demo.gif)
 
 ## Features
