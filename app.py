@@ -65,7 +65,7 @@ def summarize():
         # Use the fetch_transcript function from transcript_extractor.py to get the transcript
         transcript_text = fetch_transcript(video_url)
 
-        if "error" in transcript_text.lower():
+        if "An error occurred while fetching the transcript: " in transcript_text.lower():
             print("Transcript error detected.")
             return render_template('index.html', error=transcript_text)  # Display error if transcript fetching fails
 

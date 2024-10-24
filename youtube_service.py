@@ -24,20 +24,21 @@ def fetch_transcript(video_url):
     :param video_url: URL of the YouTube video
     :return: Transcript as a string, or an error message
     """
+    error_message = "An error occurred while fetching the transcript: "
     video_id = get_video_id(video_url)
     if not video_id:
-        return "Invalid or unsupported YouTube URL."
+        return f"{error_message} Invalid or unsupported YouTube URL."
 
     try:
         transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
         transcript_text = ' '.join([item['text'] for item in transcript_list])
         return transcript_text
     except VideoUnavailable:
-        return "The video is unavailable or does not exist."
+        return f"{error_message} The video is unavailable or does not exist."
     except NoTranscriptFound:
-        return "No transcript found for this video."
+        return f"{error_message} No transcript found for this video."
     except Exception as e:
-        return f"An error occurred while fetching the transcript: {str(e)}"
+        return f"{error_message} {str(e)}"
 
 # Example usage for testing:
 if __name__ == "__main__":
